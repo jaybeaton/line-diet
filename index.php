@@ -272,26 +272,26 @@ if ($reload) {
 
 </form>
 
+<?php if ($success) { ?>
+  <div class="success">
+    <div class="success-text">
+      Congratulations!<br>
+      <?php print $success['text'] ?>
+    </div>
+    <?php if (!empty($success['image'])) { ?>
+      <div class="success-image">
+        <img alt="Congratulations!" src="./images/<?php print $success['image'] ?>">
+      </div>
+    <?php } ?>
+  </div>
+<?php } ?>
+
 <?php if ($goal_info) { ?>
 <div class="todays-action todays-action--<?php print $goal_info['action'] ?>">
   <div class="todays-action-text">
   <?php print $goal_info['action_text'] ?>
   </div>
 </div>
-<?php } ?>
-
-<?php if ($success) { ?>
-    <div class="success">
-        <div class="success-text">
-          Congratulations!<br>
-          <?php print $success['text'] ?>
-        </div>
-        <?php if (!empty($success['image'])) { ?>
-        <div class="success-image">
-          <img alt="Congratulations!" src="./images/<?php print $success['image'] ?>">
-        </div>
-        <?php } ?>
-    </div>
 <?php } ?>
 
 <div class="chart-wrapper">
