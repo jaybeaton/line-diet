@@ -144,7 +144,7 @@ if ($measurements) {
     $timestamp += SECONDS_PER_DAY;
   }
 
-  if (round($measurements[$today], 1) <= round($settings->end_weight, 1)) {
+  if (!empty($measurements[$today]) && round($measurements[$today], 1) <= round($settings->end_weight, 1)) {
     // They hit their goal!
     $message = "You've hit your goal ";
     $days_delta = round(($today_timestamp - $end_timestamp) / SECONDS_PER_DAY);
