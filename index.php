@@ -1,6 +1,8 @@
 <?php
 const SECONDS_PER_DAY = 60 * 60 * 24;
 const DATA_PATH = './data/';
+const IMAGE_PATH = './images/';
+const DEFAULT_IMAGE = 'default.gif';
 const COOKIE_NAME = 'line_diet_id';
 
 function get_goal_info($settings, $date, $weight) {
@@ -36,6 +38,25 @@ function get_data($id) {
   return $data;
 }
 
+function get_image() {
+  $images = [];
+  $files = scandir(IMAGE_PATH);
+  foreach ($files as $file) {
+    if (!str_ends_with($file, '.gif')) {
+      continue;
+    }
+    $images[$file] = TRUE;
+  } // Loop thru files in images directory.
+  if (!empty($images[DEFAULT_IMAGE]) && count($images) > 1) {
+    // Remove the default image.
+    unset($images[DEFAULT_IMAGE]);
+  }
+  $images = array_keys($images);
+  $index = rand(0, count($images) - 1);
+  return $images[$index];
+}
+
+$success = [];
 $reload = FALSE;
 $id = NULL;
 if (!empty($_REQUEST['import'])) {
@@ -123,6 +144,28 @@ if ($measurements) {
     $timestamp += SECONDS_PER_DAY;
   }
 
+  if (round($measurements[$today], 1) <= round($settings->end_weight, 1)) {
+    // They hit their goal!
+    $message = "You've hit your goal ";
+    $days_delta = round(($today_timestamp - $end_timestamp) / SECONDS_PER_DAY);
+    $before_after = ($days_delta <= 0) ? 'before' : 'after';
+    $days_delta = abs($days_delta);
+    if ($days_delta > 0) {
+      $message .= $days_delta . ' ';
+      $message .= ($days_delta == 1) ? 'day' : 'days';
+      $message .= ' ' . $before_after;
+    }
+    else {
+      $message .= 'on';
+    }
+    $message .= ' your deadline!';
+    $days =
+    $success = [
+      'text' => $message,
+      'image' => get_image(),
+    ];
+  }
+
   $table['header'] = [
     'Date',
     'Day',
@@ -189,7 +232,7 @@ if (!empty($measurements[$today])) {
 
 if ($reload) {
   $url = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
-  header('Location: ' . $url);
+  header('Location: ' . $url, TRUE, 302);
   exit();
 }
 ?>
@@ -350,6 +393,15 @@ if ($reload) {
     color: var(--dark-red);
     background-color: var(--light-red);
   }
+  .success {
+    width: 100%;
+    padding: 30px 0;
+  }
+  .success .success-text {
+    font-weight: bold;
+    font-size: 36px;
+    padding-bottom: 10px;
+  }
   table {
     width: 95%;
   }
@@ -399,6 +451,20 @@ if ($reload) {
   <?php print $goal_info['action_text'] ?>
   </div>
 </div>
+<?php } ?>
+
+<?php if ($success) { ?>
+    <div class="success">
+        <div class="success-text">
+          Congratulations!<br>
+          <?php print $success['text'] ?>
+        </div>
+        <?php if (!empty($success['image'])) { ?>
+        <div class="success-image">
+          <img alt="Congratulations!" src="./images/<?php print $success['image'] ?>">
+        </div>
+        <?php } ?>
+    </div>
 <?php } ?>
 
 <div class="chart-wrapper">
