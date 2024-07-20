@@ -350,8 +350,9 @@ if ($table) {
       <input type="submit" name="save" value="Save settings">
     </div>
     <div class="field field--id">
-      <div class="label">ID</div>
-      <div class="value"><?php print $id ?></div>
+      <div class="label">To access your data on a different device, go to this URL on your other device:</div>
+      <?php $import_url =  $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . (parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH)) . '?import=' .  $id; ?>
+      <div class="value"><a href="<?php print $import_url ?>"><?php print $import_url ?></a></div>
     </div>
   </details>
 </form>
