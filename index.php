@@ -42,7 +42,7 @@ function get_image() {
   $images = [];
   $files = scandir(IMAGE_PATH);
   foreach ($files as $file) {
-    if (!str_ends_with($file, '.gif')) {
+    if (!preg_match('/\.(gif|png|webp|jpeg|jpg)$/', $file)) {
       continue;
     }
     $images[$file] = TRUE;

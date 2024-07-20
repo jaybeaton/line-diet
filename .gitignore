@@ -1,5 +1,8 @@
 # Saved data.
 data/
 
+# Images/
+images/*
+
 # IDE files
 .idea
