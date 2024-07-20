@@ -244,181 +244,8 @@ if ($reload) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Line Diet</title>
   <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
+  <link rel="stylesheet" media="all" href="./styles.css" />
 </head>
-<style>
-  /*https://piccalil.li/blog/a-more-modern-css-reset/*/
-  /* Box sizing rules */
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  /* Prevent font size inflation */
-  html {
-    -moz-text-size-adjust: none;
-    -webkit-text-size-adjust: none;
-    text-size-adjust: none;
-  }
-
-  /* Remove default margin in favour of better control in authored CSS */
-  body, h1, h2, h3, h4, p,
-  figure, blockquote, dl, dd {
-    margin-block-end: 0;
-  }
-
-  /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-  ul[role='list'],
-  ol[role='list'] {
-    list-style: none;
-  }
-
-  /* Set core body defaults */
-  body {
-    min-height: 100vh;
-    line-height: 1.5;
-  }
-
-  /* Set shorter line heights on headings and interactive elements */
-  h1, h2, h3, h4,
-  button, input, label {
-    line-height: 1.1;
-  }
-
-  /* Balance text wrapping on headings */
-  h1, h2,
-  h3, h4 {
-    text-wrap: balance;
-  }
-
-  /* A elements that don't have a class get default styles */
-  a:not([class]) {
-    text-decoration-skip-ink: auto;
-    color: currentColor;
-  }
-
-  /* Make images easier to work with */
-  img,
-  picture {
-    max-width: 100%;
-    display: block;
-  }
-
-  /* Inherit fonts for inputs and buttons */
-  input, button,
-  textarea, select {
-    font: inherit;
-  }
-
-  /* Make sure textareas without a rows attribute are not tiny */
-  textarea:not([rows]) {
-    min-height: 10em;
-  }
-
-  /* Anything that has been anchored to should have extra scroll margin */
-  :target {
-    scroll-margin-block: 5ex;
-  }
-
-
-  html {
-    --light-red: #f2dede;
-    --dark-red: #a94442;
-    --light-green: #dff0d8;
-    --dark-green: #3c763d;
-    --dark-gray: #333;
-    --text-color: var(--dark-gray);
-    --button-text-color: #fff;
-    --button-color: #007bff;
-  }
-  body {
-    color: var(--text-color);
-    font-size: 22px;
-    font-family: 'Open Sans', sans-serif
-  }
-  details {
-    border: 1px solid var(--text-color);
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-  }
-  summary {
-    font-weight: bold;
-  }
-  .field {
-    padding: 5px 0;
-  }
-  .field--id {
-    font-size: 16px;
-  }
-  .label, label {
-    display: block;
-    font-weight: bold;
-  }
-  input {
-    border: 1px solid var(--text-color);
-    border-radius: 5px;
-    padding: 5px;
-  }
-  input[type="submit"] {
-    color: var(--button-text-color);
-    background-color: var(--button-color);
-    border: 1px solid;
-    border-radius: 16px;
-    padding: 10px;
-    font-weight: bold;
-  }
-  input[type="submit"]:hover {
-    background-color: var(--button-text-color);
-    color: var(--button-color);
-    border-color: var(--button-color);
-  }
-  .actions {
-    padding: 5px 0;
-  }
-  .todays-action {
-    border: 1px solid var(--text-color);
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 24px;
-    font-weight: bold;
-  }
-  .todays-action--normal {
-    border: 1px solid var(--dark-green);
-    color: var(--dark-green);
-    background-color: var(--light-green);
-  }
-  .todays-action--light {
-    border-color: var(--dark-red);
-    color: var(--dark-red);
-    background-color: var(--light-red);
-  }
-  .success {
-    width: 100%;
-    padding: 30px 0;
-  }
-  .success .success-text {
-    font-weight: bold;
-    font-size: 36px;
-    padding-bottom: 10px;
-  }
-  table {
-    width: 95%;
-  }
-  tr.normal {
-    background-color: var(--light-green);
-  }
-  tr.light {
-    background-color: var(--light-red);
-  }
-  th, td {
-    text-align: right;
-    font-size: 14px;
-  }
-  th.header--date, td.align-left {
-    text-align: left;
-  }
-</style>
 <body>
 
 <form method="post">
@@ -500,7 +327,7 @@ if ($table) {
   </div>
 <?php } ?>
 
-<form method="post">
+<form class="settings-form" method="post">
   <details>
     <summary>Settings</summary>
     <div class="field">
@@ -532,48 +359,7 @@ if ($table) {
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 const chartDataValues = <?php print json_encode(array_values($chart_data)); ?>;
-
-if (chartDataValues) {
-  google.charts.load('current', {packages: ['corechart', 'line']});
-  google.charts.setOnLoadCallback(drawAxisTickColors);
-}
-
-function drawAxisTickColors() {
-  var data = new google.visualization.DataTable();
-  data.addColumn('number', 'Day');
-  data.addColumn('number', 'Goal');
-  data.addColumn('number', 'Actual');
-  data.addRows(chartDataValues);
-
-  var options = {
-    hAxis: {
-      title: '',
-      textStyle: {
-        color: '#01579b',
-      },
-      titleTextStyle: {
-        color: '#01579b',
-      }
-    },
-    vAxis: {
-      title: '',
-      textStyle: {
-        color: '#1a237e',
-      },
-      titleTextStyle: {
-        color: '#1a237e',
-      }
-    },
-    chartArea: {
-      width: '85%',
-      height: '60%'
-    },
-    legend: 'none',
-    colors: ['#a52714', '#097138']
-  };
-  var chart = new google.visualization.LineChart(document.getElementById('chart'));
-  chart.draw(data, options);
-}
 </script>
+<script type="text/javascript" src="./scripts.js"></script>
 </body>
 </html>
