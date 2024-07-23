@@ -117,11 +117,14 @@ if (!empty($_REQUEST['weigh_in'])) {
   $save = TRUE;
   $reload = TRUE;
   $todays_weight = $_REQUEST['weight'] ?? '';
+  $todays_weight = floatval($todays_weight);
 
   //$start_timestamp = strtotime($settings->start_date . ' 12:00:00');
   //$end_timestamp = strtotime($settings->end_date . ' 12:00:00');
   //$num_days = ($end_timestamp - $start_timestamp) / SECONDS_PER_DAY;
-  $measurements[$today] = $todays_weight;
+  if ($todays_weight) {
+    $measurements[$today] = $todays_weight;
+  }
 }
 
 $chart_data = [];
