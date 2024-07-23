@@ -211,6 +211,7 @@ if ($save) {
 
 $goal_info = [];
 if (!empty($measurements[$today])) {
+  $todays_weight = $measurements[$today];
   $goal_info = get_goal_info($settings, $today, $measurements[$today]);
   $goal_info['action_text'] = ($goal_info['action'] == 'light') ? 'Eat light' : 'Eat normal';
 }
