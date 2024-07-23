@@ -13,7 +13,7 @@ function get_goal_info($settings, $date, $weight) {
   $goal_weight = $settings->start_weight - ( ($date_timestamp - $start_timestamp) / ($end_timestamp - $start_timestamp) * ($settings->start_weight - $settings->end_weight) );
   return [
     'weight' => $goal_weight,
-    'action' =>  ($weight > $goal_weight) ? 'light' : 'normal',
+    'action' =>  (number_format($weight, 1) > number_format($goal_weight, 1)) ? 'light' : 'normal',
   ];
 }
 
